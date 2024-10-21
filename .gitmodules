@@ -1,3 +1,6 @@
 [submodule "security"]
 	path = back/src/main/resources/security
 	url = https://github.com/2024-TeamPS/security.git
+[submodule "cal104/back/src/main/resources/security"]
+	path = cal104/back/src/main/resources/security
+	url = https://github.com/2024-TeamPS/cal104.git
