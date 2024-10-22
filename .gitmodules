@@ -4,3 +4,9 @@
 [submodule "cal104/back/src/main/resources/security"]
 	path = cal104/back/src/main/resources/security
 	url = https://github.com/2024-TeamPS/cal104.git
+[submodule "back/eureka-server"]
+	path = back/eureka-server
+	url = https://github.com/2024-TeamPS/eureka-server.git
+[submodule "back/user-service"]
+	path = back/user-service
+	url = https://github.com/2024-TeamPS/user-service.git
