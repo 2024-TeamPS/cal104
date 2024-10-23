@@ -7,7 +7,7 @@ const Calendar = () => {
   const [currentYear, setCurrentYear] = useState(today.getFullYear())
 
   const calendar = generateCalendar(currentYear, currentMonth)
-
+  console.log(calendar)
   const handlePrevMonth = () => {
     setCurrentMonth((prev) => (prev === 0 ? 11 : prev - 1))
     if (currentMonth === 0) setCurrentYear((prev) => prev - 1)
@@ -19,8 +19,8 @@ const Calendar = () => {
   }
 
   return (
-    <div className="w-full h-screen bg-slate-400">
-      <div className="p-4">
+    <div className="w-full h-screen bg-white border-l-2">
+      <div>
         <header className="flex justify-between mb-4">
           <button onClick={handlePrevMonth}>이전</button>
           <h2>
@@ -28,12 +28,12 @@ const Calendar = () => {
           </h2>
           <button onClick={handleNextMonth}>다음</button>
         </header>
-        <table className="w-full text-center">
+        <table className="w-full text-center table-fixed">
           <thead>
             <tr>
-              {['일', '월', '화', '수', '목', '금', '토'].map((day) => (
-                <th key={day} className="p-2 border">
-                  {day}
+              {['SUN', 'MON', 'TUE', 'WED', 'THR', 'FRI', 'SAT'].map((day, idx) => (
+                <th key={day} className="text-left">
+                  <p className={`text-sm font-medium ml-1 ${idx === 0 ? "text-red-500": idx === 6? "text-blue-500" :"text-slate-800"}`}>{day}</p>
                 </th>
               ))}
             </tr>
@@ -42,8 +42,16 @@ const Calendar = () => {
             {calendar.map((week, index) => (
               <tr key={index}>
                 {week.map((date, idx) => (
-                  <td key={idx} className="p-2 border">
-                    {date.getMonth() === currentMonth ? date.getDate() : ''}
+                  <td key={idx} className="p-2 border h-36 relative">
+                    {date.getMonth() === currentMonth ? (
+                      <p className={`text-sm ${idx === 0 ? "text-red-500": idx === 6? "text-blue-500" :"text-slate-800"} absolute left-3 top-3`}>
+                        {date.getDate()}
+                      </p>
+                    ) : (
+                      <p className={`text-sm ${idx === 0 ? "text-red-200": idx === 6? "text-blue-200" :"text-slate-300"} absolute left-3 top-3`}>
+                        {date.getDate()}
+                      </p>
+                    )}
                   </td>
                 ))}
               </tr>
