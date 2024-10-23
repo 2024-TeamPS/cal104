@@ -6,7 +6,7 @@ const generateCalendar = (year: number, month: number) => {
   const calendar: Date[][] = []
   let week: Date[] = []
 
-  for (let i = 1 - startDate.getDay(); i <= endDate.getDate(); i++) {
+  for (let i = 1 - startDate.getDay(); i <= endDate.getDate() + 6 - endDate.getDay(); i++) {
     const date = new Date(year, month, i)
     week.push(date)
 
