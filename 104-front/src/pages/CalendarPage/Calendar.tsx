@@ -1,13 +1,19 @@
 import { useState } from 'react'
 import generateCalendar from './generate_calendar'
+import Modal from '../../components/Modal'
+import YearMonthSelector from './YearMonthSelectorProps'
+import Button from '../../components/Button'
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 
 const Calendar = () => {
   const today = new Date()
   const [currentMonth, setCurrentMonth] = useState(today.getMonth())
   const [currentYear, setCurrentYear] = useState(today.getFullYear())
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const calendar = generateCalendar(currentYear, currentMonth)
-  console.log(calendar)
+
   const handlePrevMonth = () => {
     setCurrentMonth((prev) => (prev === 0 ? 11 : prev - 1))
     if (currentMonth === 0) setCurrentYear((prev) => prev - 1)
@@ -18,47 +24,98 @@ const Calendar = () => {
     if (currentMonth === 11) setCurrentYear((prev) => prev + 1)
   }
 
+  const isToday = (date: Date) => {
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    )
+  }
+
+  const handleYearMonthSelect = (year: number, month: number) => {
+    setCurrentYear(year)
+    setCurrentMonth(month)
+    setIsModalOpen(false) // 선택 후 모달 닫기
+  }
+
   return (
     <div className="w-full h-screen bg-white border-l-2">
-      <div>
-        <header className="flex justify-between mb-4">
-          <button onClick={handlePrevMonth}>이전</button>
-          <h2>
-            {currentYear}년 {currentMonth + 1}월
-          </h2>
-          <button onClick={handleNextMonth}>다음</button>
-        </header>
-        <table className="w-full text-center table-fixed">
-          <thead>
-            <tr>
-              {['SUN', 'MON', 'TUE', 'WED', 'THR', 'FRI', 'SAT'].map((day, idx) => (
+      <div className="flex mt-1 ml-4">
+        <div className="h-10 grid place-items-center">
+          <span
+            className="cursor-pointer font-bold text-lg"
+            onClick={() => setIsModalOpen(true)}
+          >
+            {currentYear}.{String(currentMonth + 1).padStart(2, '0')}
+          </span>
+        </div>
+        <div className="ml-2 flex items-center">
+          <ArrowBackIosNewIcon
+            className="!w-6 p-1 cursor-pointer border rounded-sm rounded-r-none"
+            onClick={handlePrevMonth}
+          />
+          <ArrowForwardIosIcon
+            className="!w-6 p-1 cursor-pointer border border-l-0 rounded-sm rounded-l-none"
+            onClick={handleNextMonth}
+          />
+        </div>
+      </div>
+      <table className="w-full text-center table-fixed">
+        <thead>
+          <tr>
+            {['SUN', 'MON', 'TUE', 'WED', 'THR', 'FRI', 'SAT'].map(
+              (day, idx) => (
                 <th key={day} className="text-left">
-                  <p className={`text-sm font-medium ml-1 ${idx === 0 ? "text-red-500": idx === 6? "text-blue-500" :"text-slate-800"}`}>{day}</p>
+                  <p
+                    className={`text-sm font-medium ml-1 ${idx === 0 ? 'text-red-500' : idx === 6 ? 'text-blue-500' : 'text-slate-800'}`}
+                  >
+                    {day}
+                  </p>
                 </th>
+              )
+            )}
+          </tr>
+        </thead>
+        <tbody>
+          {calendar.map((week, index) => (
+            <tr key={index}>
+              {week.map((date, idx) => (
+                <td
+                  key={idx}
+                  className="border h-36 relative hover:bg-slate-50"
+                >
+                  {date.getMonth() === currentMonth ? (
+                    <span
+                      className={`text-sm absolute left-3 top-3 ${
+                        isToday(date)
+                          ? 'bg-slate-600 text-white rounded-full w-6 h-6'
+                          : idx === 0
+                            ? 'text-red-500'
+                            : idx === 6
+                              ? 'text-blue-500'
+                              : 'text-slate-800'
+                      }`}
+                    >
+                      {date.getDate()}
+                    </span>
+                  ) : (
+                    <span
+                      className={`text-sm ${idx === 0 ? 'text-red-200' : idx === 6 ? 'text-blue-200' : 'text-slate-300'} absolute left-3 top-3`}
+                    >
+                      {date.getDate()}
+                    </span>
+                  )}
+                </td>
               ))}
             </tr>
-          </thead>
-          <tbody>
-            {calendar.map((week, index) => (
-              <tr key={index}>
-                {week.map((date, idx) => (
-                  <td key={idx} className="p-2 border h-36 relative">
-                    {date.getMonth() === currentMonth ? (
-                      <p className={`text-sm ${idx === 0 ? "text-red-500": idx === 6? "text-blue-500" :"text-slate-800"} absolute left-3 top-3`}>
-                        {date.getDate()}
-                      </p>
-                    ) : (
-                      <p className={`text-sm ${idx === 0 ? "text-red-200": idx === 6? "text-blue-200" :"text-slate-300"} absolute left-3 top-3`}>
-                        {date.getDate()}
-                      </p>
-                    )}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
+      {isModalOpen && (
+        <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+          <YearMonthSelector onSelect={handleYearMonthSelect} />
+        </Modal>
+      )}
     </div>
   )
 }
