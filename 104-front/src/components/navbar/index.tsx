@@ -1,4 +1,4 @@
-import AddButton from './addButton'
+import AddButton from './AddButton'
 
 const Navbar = () => {
   return (
