@@ -10,3 +10,6 @@
 [submodule "back/user-service"]
 	path = back/user-service
 	url = https://github.com/2024-TeamPS/user-service.git
+[submodule "back/api-gateway-service"]
+	path = back/api-gateway-service
+	url = https://github.com/2024-TeamPS/api-gateway-service.git
