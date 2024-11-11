@@ -1,21 +1,10 @@
-import axios, { AxiosInstance } from 'axios'
+import axios from 'axios'
 
 const DOMAIN = 'http://localhost:8081'
 
-interface Token {
-  accessTokem: string
-}
-
-const API = (token?: Token): AxiosInstance => {
-  const instance: AxiosInstance = axios.create({
-    baseURL: `${DOMAIN}/api`,
-    headers: {
-      Authorization: token ? `Bearer ${token.accessTokem}` : '',
-    },
-    withCredentials: true,
-  })
-
-  return instance
-}
+const API = axios.create({
+  baseURL: `${DOMAIN}/api`,
+  withCredentials: true,
+})
 
 export default API

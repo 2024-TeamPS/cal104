@@ -2,7 +2,6 @@ import { useState } from 'react'
 import generateCalendar from './generate_calendar'
 import Modal from '../../components/Modal'
 import YearMonthSelector from './YearMonthSelectorProps'
-import Button from '../../components/Button'
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 
@@ -39,7 +38,7 @@ const Calendar = () => {
   }
 
   return (
-    <div className="w-full h-screen bg-white border-l-2">
+    <div className="min-w-60 w-full h-screen bg-white border-l-2">
       <div className="flex mt-1 ml-4">
         <div className="h-10 grid place-items-center">
           <span
@@ -82,7 +81,7 @@ const Calendar = () => {
               {week.map((date, idx) => (
                 <td
                   key={idx}
-                  className="border h-36 relative hover:bg-slate-50"
+                  className="border h-40 relative hover:bg-slate-50"
                 >
                   {date.getMonth() === currentMonth ? (
                     <span

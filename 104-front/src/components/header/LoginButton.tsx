@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import Button from '../Button'
-import { GoogleLogin, useGoogleOneTapLogin } from '@react-oauth/google'
+import { GoogleLogin } from '@react-oauth/google'
 import userStore from '../../store/userStore'
-import { jwtDecode, JwtPayload } from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 import Notify from './Notify'
+// import { signIn } from '../../api/userApi'
+// import axios from 'axios'
 
 interface GoogleUser {
   name: string
@@ -16,8 +18,16 @@ const LoginButton = () => {
   const [loginClicked, setLoginClicked] = useState(false)
   const [isLogined, setIsLogined] = useState(false)
   const [imagePath, setImagePath] = useState('')
-  const { nickname, setGoogleCredential, setNickname, setEmail } = userStore()
+  const { setGoogleCredential, setNickname, setEmail } = userStore()
 
+ // 로그인 버튼을 누르면
+ // 구글 로그인 api 호출
+ // 결과 받아서 nickname, email 등 zustand 에 저장
+ // 백엔드 서버에 로그인 요청
+ // 데이터에 없으면 회원가입
+ // 있으면
+ // response 받아서 access, refresh 토큰 저장 
+ 
   return (
     <div className="mr-10">
       {!isLogined && !loginClicked && (
@@ -25,7 +35,7 @@ const LoginButton = () => {
       )}
       {!isLogined && loginClicked && (
         <GoogleLogin
-          onSuccess={(credentialResponse) => {
+          onSuccess={async (credentialResponse) => {
             // console.log(credentialResponse)
             if (credentialResponse.credential) {
               setGoogleCredential(credentialResponse.credential)
@@ -37,6 +47,11 @@ const LoginButton = () => {
                 setEmail(decodedToken.email)
                 setNickname(decodedToken.given_name)
                 setImagePath(decodedToken.picture)
+                
+                // const response = await signIn({provider: "google", code: credentialResponse.credential})
+                // axios.defaults.headers.common['Authorization'] = `Bearer ${response.accessToken}`
+
+
                 setIsLogined(true)
               } catch (error) {
                 console.log(error)
