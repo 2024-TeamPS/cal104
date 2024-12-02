@@ -13,3 +13,6 @@
 [submodule "back/api-gateway-service"]
 	path = back/api-gateway-service
 	url = https://github.com/2024-TeamPS/api-gateway-service.git
+[submodule "back/auth-service"]
+	path = back/auth-service
+	url = https://github.com/2024-TeamPS/auth-service.git
